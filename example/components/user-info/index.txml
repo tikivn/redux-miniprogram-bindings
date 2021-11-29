@@ -1,0 +1,1 @@
+<view>User info in component：Name：{{ userInfo.name }}，Age：{{ userInfo.age }}</view>

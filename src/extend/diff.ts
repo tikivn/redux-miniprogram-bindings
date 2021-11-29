@@ -15,10 +15,10 @@ function diffObject(
   const currDataKeysLen = currDataKeys.length
   const prevDataKeysLen = prevDataKeys.length
 
-  // 都是空对象
+  // are all empty objects
   if (currDataKeysLen < 1 && prevDataKeysLen < 1) return
 
-  // 其中有一个是空对象或新对象中删除了某些属性
+  // One of them is an empty object or some attributes are deleted from the new object
   if (currDataKeysLen < 1 || prevDataKeysLen < 1 || currDataKeysLen < prevDataKeysLen) {
     result[rootPath] = currData
     return
@@ -26,7 +26,7 @@ function diffObject(
 
   for (let i = 0; i < prevDataKeysLen; i++) {
     const key = prevDataKeys[i]
-    // 新对象中删除了某些属性
+    // Some properties have been deleted from the new object
     if (currDataKeys.indexOf(key) < 0) {
       result[rootPath] = currData
       return
@@ -37,7 +37,7 @@ function diffObject(
     const key = currDataKeys[i]
     const currValue = currData[key]
     const targetPath = `${rootPath}.${key}`
-    // 新增属性
+    // New attributes
     if (prevDataKeys.indexOf(key) < 0) {
       result[targetPath] = currValue
       continue
@@ -71,10 +71,10 @@ function diffArray(
   const currDataLen = currData.length
   const prevDataLen = prevData.length
 
-  // 都是空数组
+  // are all empty arrays
   if (currDataLen < 1 && prevDataLen < 1) return
 
-  // 其中有一个是空数组或新数组中删除了某些项
+  // One of them is an empty array or some items have been deleted from the new array
   if (currDataLen < 1 || prevDataLen < 1 || currDataLen < prevDataLen) {
     result[rootPath] = currData
     return
@@ -83,7 +83,7 @@ function diffArray(
   for (let i = 0; i < currDataLen; i++) {
     const currValue = currData[i]
     const targetPath = `${rootPath}[${i}]`
-    // 新增项
+    // New item
     if (i >= prevDataLen) {
       result[targetPath] = currValue
       continue
@@ -118,10 +118,10 @@ export default function diff(
   const currDataKeysLen = currDataKeys.length
   const prevDataKeysLen = prevDataKeys.length
 
-  // 都是空对象
+  // are all empty objects
   if (currDataKeysLen < 1 && prevDataKeysLen < 1) return {}
 
-  // 其中有一个是空对象
+  // one of them is an empty object
   if (currDataKeysLen < 1 || prevDataKeysLen < 1) {
     return rootPath ? { [rootPath]: currData } : currData
   }
@@ -131,7 +131,7 @@ export default function diff(
     const key = currDataKeys[i]
     const currValue = currData[key]
     const targetPath = rootPath ? `${rootPath}.${key}` : key
-    // 新增属性
+    // New attributes
     if (prevDataKeys.indexOf(key) < 0) {
       result[targetPath] = currValue
       continue

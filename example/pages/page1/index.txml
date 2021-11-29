@@ -1,0 +1,18 @@
+<counter></counter>
+
+<button style="margin-top: 12rpx;" type="warn" onTap="handleReset">Reset</button>
+
+<view class="gap">Count value in page：{{ counter }}</view>
+
+<view class="gap">User info on page：{{ intro }}</view>
+
+<user-info></user-info>
+
+<view style="margin-top: 24rpx; display: flex; align-items: center;">
+  <input value="{{ inputValue }}" placeholder="Please enter username" onInput="handleInput" />
+  <button type="primary" onTap="updateUserName">Update</button>
+</view>
+
+<!-- <navigator class="gap" hover-class="none" url="../page2/index">
+  <button type="primary">Page jump</button>
+</navigator> -->

@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser'
 const fileName = 'redux-miniprogram-bindings'
 
 const genDevConf = (platform) => {
-  const platformId = platform === 'wechat' ? '' : '.alipay'
+  const platformId = platform === 'tiniapp' ? '' : platform === 'wechat' ? '.wechat' : '.alipay'
 
   return {
     input: './src/index.ts',
@@ -29,7 +29,7 @@ const genDevConf = (platform) => {
 }
 
 const genProdConf = (platform) => {
-  const platformId = platform === 'wechat' ? '' : '.alipay'
+  const platformId = platform === 'tiniapp' ? '' : platform === 'wechat' ? '.wechat' : '.alipay'
 
   return {
     input: './src/index.ts',
@@ -55,8 +55,8 @@ const genProdConf = (platform) => {
   }
 }
 
-const devConf = [genDevConf('wechat')]
-const prodConf = [genProdConf('wechat'), genProdConf('alipay')]
+const devConf = [genDevConf('tiniapp')]
+const prodConf = [genProdConf('tiniapp'), genProdConf('wechat'), genProdConf('alipay')]
 
 const config = process.env.NODE_ENV === 'production' ? prodConf : devConf
 

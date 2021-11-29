@@ -10,8 +10,8 @@ import { setUserInfo } from '../../store/actions/userInfo'
 
 const introSelector = useSelector(
   (state) => {
-    console.log('重新计算')
-    return { intro: `姓名：${state.userInfo.name}，年龄：${state.userInfo.age}` }
+    console.log('Re-calculate')
+    return { intro: `Name：${state.userInfo.name}，Age：${state.userInfo.age}` }
   },
   ['userInfo'],
 )
@@ -40,19 +40,19 @@ connect({
       return state.userInfo.name
     }
     const userNameRef = useRef(useSelector(calcUserName, ['userInfo']))
-    console.log('用户名', userNameRef.value)
+    console.log('Username', userNameRef.value)
 
     setTimeout(() => {
       this.updateUserInfo({
-        name: '新用户名1',
+        name: 'New username1',
         age: 26,
       })
       this.updateUserInfo({
-        name: '新用户名2',
+        name: 'New username2',
         age: 26,
       })
 
-      console.log('用户名', userNameRef.value)
+      console.log('username', userNameRef.value)
     }, 3000)
   },
 

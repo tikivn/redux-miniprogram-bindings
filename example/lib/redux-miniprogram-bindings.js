@@ -8,21 +8,22 @@ const warn = (message) => {
     throw new Error(message);
 };
 
-const providerStore =  Object.create(null);
+const providerStore =  my ;
 const genLifetimes = (component2 = false) => ({
     page: ['onLoad', 'onUnload'],
-    component:  ['attached', 'detached'],
+    component:  [component2 ? 'onInit' : 'didMount', 'didUnmount']
+        ,
 });
 function setProvider(provider) {
     if (!isPlainObject(provider)) {
-        warn('provider必须是一个Object');
+        warn('provider must be an Object');
     }
     const { store, namespace = '', component2 = false } = provider;
     if (!store ||
         !isFunction(store.getState) ||
         !isFunction(store.dispatch) ||
         !isFunction(store.subscribe)) {
-        warn('store必须为Redux的Store实例对象');
+        warn('store must be a Redux Store instance');
     }
     providerStore.__REDUX_BINDINGS_PROVIDER__ = {
         store,
@@ -32,7 +33,7 @@ function setProvider(provider) {
 }
 function getProvider() {
     if (!providerStore.__REDUX_BINDINGS_PROVIDER__) {
-        warn('请先设置provider');
+        warn('Please setup provider first');
     }
     return providerStore.__REDUX_BINDINGS_PROVIDER__;
 }

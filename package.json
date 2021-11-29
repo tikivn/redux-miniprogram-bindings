@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DPFlying/redux-miniprogram-bindings.git"
+    "url": "git+https://github.com/tikivn/redux-miniprogram-bindings.git"
   },
   "keywords": [
     "redux",
@@ -19,14 +19,15 @@
     "wechat-mini-program",
     "alipay-mini-program",
     "wechat",
-    "alipay"
+    "alipay",
+    "tiniapp"
   ],
   "author": "DPFlying <1419006060@qq.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DPFlying/redux-miniprogram-bindings/issues"
+    "url": "https://github.com/tikivn/redux-miniprogram-bindings/issues"
   },
-  "homepage": "https://github.com/DPFlying/redux-miniprogram-bindings#readme",
+  "homepage": "https://github.com/tikivn/redux-miniprogram-bindings#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

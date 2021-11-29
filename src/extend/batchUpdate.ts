@@ -8,19 +8,19 @@ const queue: QueueItem[] = []
 export function batchUpdate({ id, data, setData }: Context, updater: IAnyObject): void {
   const queueItem = queue.find((q) => q.id === id)
   if (queueItem) {
-    // 合并多次更新
+    // Merge multiple updates
     Object.assign(queueItem.updater, updater)
   } else {
     /**
-     * 对初始值进行浅拷贝存储，作为后续执行 diff 时的原始比较对象
-     * 主要为了防止 引用类型数据 被某一页面(组件)执行 setData 修改后，剩余的页面(组件) diff 结果出错的情况
-     */
+      * A shallow copy of the initial value is stored as the original comparison object when the subsequent diff is executed
+      * Mainly to prevent the reference type data from being modified by a page (component) by executing setData, and the diff result of the remaining page (component) is wrong.
+      */
     queue.push({ id, rootPath: getProvider().namespace, data: { ...data }, updater, setData })
   }
 
-  // 同步更新数据
+  // Update data synchronously
   Object.assign(data, updater)
-  // 异步更新视图
+  // Update the view asynchronously
   Promise.resolve().then(update)
 }
 

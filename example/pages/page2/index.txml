@@ -1,0 +1,10 @@
+<view>Username：{{ userName }}</view>
+<view class="gap edit">
+  <input
+    class="edit__input"
+    value="{{ inputValue }}"
+    placeholder="Please enter username"
+    onInput="handleInput"
+  />
+  <button type="primary" onTap="updateUserName">Update username</button>
+</view>

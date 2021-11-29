@@ -33,7 +33,7 @@ export function useRef<V = unknown>(selector: Selector<V>): Ref<V> {
 }
 
 export function useSelector<V = unknown>(selector: Selector<V>, deps?: string[]): Selector<V> {
-  // 依赖项不合法或不存依赖项时，返回传入的原函数
+  // When the dependency is illegal or there is no dependency, return the original function passed in
   if (!Array.isArray(deps) || deps.length < 1) {
     return selector
   }
@@ -41,7 +41,7 @@ export function useSelector<V = unknown>(selector: Selector<V>, deps?: string[])
   let lastState: IAnyObject = {}
   let lastResult: V
   return function (state: IAnyObject) {
-    // 通过浅比较判断依赖的 state 是否发生改变，决定是否重新执行函数
+    // Determine whether the dependent state has changed through shallow comparison, and decide whether to re-execute the function
     if (deps.some((k) => lastState[k] !== state[k])) {
       lastState = state
       lastResult = selector(state)

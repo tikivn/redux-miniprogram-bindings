@@ -16,7 +16,7 @@ Page(
 
     onLoad() {
       console.log('onLoad', this.data.userName)
-      // 启用订阅
+      // Enable subscription
       this.unsubscribe = useSubscribe((currState, prevState) => {
         if (currState.userInfo.name !== prevState.userInfo.name) {
           console.log('userName change')
@@ -26,7 +26,7 @@ Page(
 
     onUnload() {
       console.log('onUnload', this.data.userName)
-      // 解除订阅
+      // unsubscribe
       this.unsubscribe()
     },
 

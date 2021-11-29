@@ -1,22 +1,18 @@
 # redux-miniprogram-bindings
 
-![MIT 协议](https://img.shields.io/github/license/dpflying/redux-miniprogram-bindings)
-![NPM 版本](https://img.shields.io/npm/v/redux-miniprogram-bindings)
+[Redux](https://github.com/reduxjs/redux) cho các mini-programs (Tiki, Alipay và Wechat)
 
-适用于小程序的 [Redux](https://github.com/reduxjs/redux) 绑定辅助库
+## Đặc điểm
 
-## 特性
+- API đơn giản và linh hoạt. Nó có thể được sử dụng dễ dàng chỉ với một connect (cung cấp phương thức tắt - shortcut method - tương tác `$page` alias và `$component` alias).
+- Đầy đủ các hàm, phương thức đa dạng đáp ứng các nhu cầu và ngữ cảnh sử dụng khác nhau.
+- Hỗ trợ sử dụng trong TXML.
+- Sau khi `dispatch` được thực thi, trạng thái nội tại (internal state) của các component tự động được cập nhật; và view được đưa vào hàng đợi để kết xuất cập nhật.
+- Hỗ trợ mini-program của Tiki, WeChat và Alipay.
 
-- API 简单灵活，只需一个 `connect` 即可轻松使用(提供 `$page` 和 `$component` 别名快捷方法)
-- 功能完善，提供了多种使用方式，可满足不同的需求和使用场景
-- 支持在 XML 中使用
-- 执行 dispatch 后所有未销毁的页面(或组件)内部状态自动更新，视图自动队列批量更新渲染
-- 自动进行 diff 优化和批量队列更新处理，性能优异
-- 支持 `微信小程序` 和 `支付宝小程序`
+## Cài đặt
 
-## 安装
-
-- 通过 `npm` 或 `yarn` 安装
+- Cài đặt thông qua `npm` hay `yarn`.
 
   ```bash
   # npm
@@ -25,9 +21,9 @@
   $ yarn add redux-miniprogram-bindings redux
   ```
 
-- 也可以直接引入 `dist` 目录下对应的 `redux-miniprogram-bindings` 文件
+- Ngoài ra bạn có thể tìm thấy các tập tin phân phối bên trong của thư mục dist của redux-miniprogram-bindings.
 
-- 需要单独引入 [redux](https://github.com/reduxjs/redux) 文件(这只是个绑定库，并不包含 redux 的代码在内)
+- Tập tin redux cần được import riêng biệt (nó là thư viện binding và không chứa redux code).
 
 ## 使用
 

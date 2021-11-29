@@ -115,7 +115,7 @@ function handleMapDispatchObject(mapDispatch, target) {
 function handleMapDispatchFunction(mapDispatch, target) {
     const boundActionCreators = mapDispatch(useDispatch());
     if (!isPlainObject(boundActionCreators)) {
-        warn('mapDispatch函数必须返回一个对象');
+        warn('The mapDispatch function must return an object');
     }
     Object.assign(target, boundActionCreators);
 }
@@ -310,7 +310,7 @@ function subscription(context, mapState) {
 const INSTANCE_ID = Symbol('INSTANCE_ID');
 function connect({ type = 'page', mapState, mapDispatch, manual = false, } = {}) {
     if (type !== 'page' && type !== 'component') {
-        warn('type属性只能是page或component');
+        warn('The type attribute can only be "page" or "component"');
     }
     const isPage = type === 'page';
     const { lifetimes, namespace } = getProvider();

@@ -23,7 +23,7 @@ function handleMapDispatchObject(mapDispatch: MapDispatchObject, target: IAnyObj
 function handleMapDispatchFunction(mapDispatch: MapDispatchFunction, target: IAnyObject): void {
   const boundActionCreators = mapDispatch(useDispatch())
   if (!isPlainObject(boundActionCreators)) {
-    warn('mapDispatch函数必须返回一个对象')
+    warn('The mapDispatch function must return an object')
   }
   Object.assign(target, boundActionCreators)
 }

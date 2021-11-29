@@ -23,7 +23,7 @@ export default function connect({
   manual = false,
 }: ConnectOption = {}): (options: PageComponentOption) => void | PageComponentOption {
   if (type !== 'page' && type !== 'component') {
-    warn('type属性只能是page或component')
+    warn('The type attribute can only be "page" or "component"')
   }
 
   const isPage = type === 'page'
@@ -31,7 +31,7 @@ export default function connect({
 
   return function processOption(options: PageComponentOption): PageComponentOption | void {
     if (Array.isArray(mapState) && mapState.length > 0) {
-      // 向 options.data 中混入依赖的 state 的初始值
+      // Mix the initial value of the dependent state into options.data
       const ownState = handleMapState(mapState)
       options.data = Object.assign(
         options.data || {},
@@ -39,9 +39,9 @@ export default function connect({
       )
 
       /**
-       * 同一个组件 可以在 同一个页面中 被多次使用，分别产生各自的 unsubscribe
-       * 同一个页面 也能多个实例同时存在于页面栈中，分别产生各自的 unsubscribe
-       * 使用 Map 收集所有页面(组件)的 unsubscribe，销毁时，调用相应的 unsubscribe
+       * The same component can be used multiple times in the same page to generate their own unsubscribe
+       * The same page can also exist in multiple instances in the page stack at the same time, generating their own unsubscribe
+       * Use Map to collect the unsubscribe of all pages (components), and call the corresponding unsubscribe when it is destroyed
        */
       const unsubscribeMap = new Map<symbol, Unsubscribe>()
 
@@ -53,14 +53,14 @@ export default function connect({
         const getData = (): IAnyObject =>
           namespace ? <IAnyObject>this.data![namespace] : this.data!
 
-        // 注入依赖的 state 的最新值
+        // Inject the latest value of the dependent state
         const ownState = handleMapState(mapState)
         const diffData = diff(ownState, getData(), namespace)
         if (getKeys(diffData).length > 0) {
           this.setData(diffData)
         }
 
-        // 监听依赖的 state 的改变
+        // monitor changes in dependent state
         const id = Symbol('instanceId')
         const unsubscribe = subscription(
           { id, data: getData(), setData: this.setData.bind(this) },
@@ -79,7 +79,7 @@ export default function connect({
           oldOnUnload.apply(this)
         }
 
-        // 取消监听
+        // Cancel listening
         const id = this[INSTANCE_ID]
         if (unsubscribeMap.has(id)) {
           const unsubscribe = unsubscribeMap.get(id)!

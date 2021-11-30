@@ -139,7 +139,7 @@
 5. Sử dụng trong XML
 
    ```html
-   <view wx:if="{{ data1 }}">{{ data2 }}</view>
+   <view tiki:if="{{ data1 }}">{{ data2 }}</view>
    ```
 
 6. Để biết thêm chi tiết, tham khảo [`API`](#API) [Ví dụ](https://github.com/tikivn/redux-miniprogram-bindings/tree/master/example)
@@ -164,7 +164,7 @@ Thiết lập Provider
 
     > Giả sử `namespace: '$store'`， bạn cần sử dụng `this.data.$store.xxx` để nhận giá trị dependent state trong Page (hoặc Component) và bạn cần thêm tiền tố trong XML`<view>{{ $store.xxx }}</view>`
 
-    > Ý nghĩa của namespace:：
+    > Ý nghĩa của namespace:
     >
     > - Xác định dữ liệu nào đến từ store.
     > - Dữ liệu trong store phải được dispatch để kích hoạt việc cập nhật. Namespace có thể giúp tránh dùng nhầm `this.setData` khiến dữ liệu trong store bị thay đổi không mong muốn nhờ có thêm tiền tố namespace：`this.setData({ '$store.xxx': xxx })`
@@ -293,7 +293,7 @@ Kết nối store
     > **Lưu ý:**  Những hàm bị inject thông qua thông qua `mapDispatch` cũng có thể được sử dụng như các hàm xử lý sự kiện trong XML. Nếu bạn cần truyền các tham số hàm, theo mặc định, phương thức xử lý sự kiện (event handler) sẽ truyền đối tượng sự kiện (event object) dưới dạng tham số đầu tiên của hàm.
 
     ```html
-    <view bind:tap="handleAdd">Add</view>
+    <view onTap="handleAdd">Add</view>
     ```
 
   - manual：`boolean`
@@ -316,7 +316,7 @@ Kết nối store
 
 - Gói mở rộng：nếu bạn không thích dùng `connect` hay cách truyền tham số của nó, bạn có thể tự tạo ra gói cho riêng mình.
 
-  示例扩展 Page：
+  Ví dụ về Page：
 
   ```js
   // bootstrap.js
@@ -513,6 +513,6 @@ $page({
 })({})
 ```
 
-## diff 逻辑
+## Khác biệt (diff)
 
-![diff逻辑](./diff.svg)
+![diff](./redux-diff-chart.png)

@@ -25,9 +25,9 @@
 
 - Tập tin redux cần được import riêng biệt (nó là thư viện binding và không chứa redux code).
 
-## 使用
+## Sử dụng
 
-1. 创建 Redux 的 Store 实例
+1. Tạo ra thực thể Redux Store
 
    ```js
    // store.js
@@ -60,14 +60,14 @@
    export default store
    ```
 
-2. 在 `app.js` 文件中设置 provider
+2. Thiết lập provider trong tập tin `app.js`
 
    ```js
    // setupStore.js
    import store from 'your/store/path'
-   // 微信小程序
+   // micro channel applet
    import { setProvider } from 'redux-miniprogram-bindings'
-   // 支付宝小程序
+   //  Alipay applet 
    // import { setProvider } from 'redux-miniprogram-bindings/dist/redux-miniprogram-bindings.alipay.min.js'
 
    setProvider({ store })
@@ -75,7 +75,7 @@
 
    ```js
    // app.js
-   // 确保在其他代码之前调用
+   // Make sure to call
    import './setupStore.js'
 
    App({
@@ -83,7 +83,7 @@
    })
    ```
 
-3. 在页面中使用
+3. Sử dụng trong page
 
    ```js
    import { $page } from 'redux-miniprogram-bindings'
@@ -97,7 +97,7 @@
      },
    })({
      onLoad() {
-       // 读取 state 中的值
+       // Read the value in state
        const { dependent } = this.data
        // dispatch actionCreator1
        this.methodsName1()
@@ -107,7 +107,7 @@
    })
    ```
 
-4. 在组件中使用
+4. Sử dụng trong component
 
    ```js
    import { $component } from 'redux-miniprogram-bindings'
@@ -126,7 +126,7 @@
      }),
    })({
      attached() {
-       // 读取 state 中的值
+       // Read the value in state
        const { data1: dependent } = this.data
        // dispatch actionCreator1
        this.methodsName1()
@@ -136,55 +136,55 @@
    })
    ```
 
-5. 在 XML 中使用
+5. Sử dụng trong XML
 
    ```html
    <view wx:if="{{ data1 }}">{{ data2 }}</view>
    ```
 
-6. 详细用法请参考 [`API`](#API) 介绍和 [`示例`](https://github.com/DPFlying/redux-miniprogram-bindings/tree/master/example)
+6. Để biết thêm chi tiết, tham khảo [`API`](#API) [Ví dụ](https://github.com/tikivn/redux-miniprogram-bindings/tree/master/example)
 
 ## API
 
 ### setProvider：`(config) => void`
 
-设置 Provider
+Thiết lập Provider
 
-- config 对象的属性：
+- Các thuộc tính：
 
   - store：`Store`
 
-    Redux 的 Store 实例对象，必传
+    Redux Store instance object, phải được truyền.
 
   - namespace：`string`
 
-    命名空间，默认为空
+    Mặc định có giá trị rỗng.
 
-    当设置命名空间后，会将所有依赖的 state 数据存放到 `以命名空间字段值为 key` 的对象中，此时读取 state 值需要加上命名空间字段值
+    Sau khi namespace được thiết lập, tất cả dependent state data sẽ được lưu trữ trong đối tượng với trường namespace là key value. Trong trường hợp này, giá trị state cần được đọc cùng với giá trị của trường namespace.
 
-    > 例如设置 `namespace: '$store'`，那么在页面(或组件)中获取依赖的 state 值需要使用 `this.data.$store.xxx` 形式，在 XML 中也需要加上前缀：`<view>{{ $store.xxx }}</view>`
+    > Giả sử `namespace: '$store'`， bạn cần sử dụng `this.data.$store.xxx` để nhận giá trị dependent state trong Page (hoặc Component) và bạn cần thêm tiền tố trong XML`<view>{{ $store.xxx }}</view>`
 
-    > 命名空间存在的意义：
+    > Ý nghĩa của namespace:：
     >
-    > - 明确哪些数据是来自于 store
-    > - store 中的数据必须通过 dispatch 才能触发更新。命名空间可以避免无意中使用 `this.setData` 造成 store 中的数据被修改,因为需要加上额外的命名空间前缀：`this.setData({ '$store.xxx': xxx })`
+    > - Xác định dữ liệu nào đến từ store.
+    > - Dữ liệu trong store phải được dispatch để kích hoạt việc cập nhật. Namespace có thể giúp tránh dùng nhầm `this.setData` khiến dữ liệu trong store bị thay đổi không mong muốn nhờ có thêm tiền tố namespace：`this.setData({ '$store.xxx': xxx })`
 
   - component2: `boolean`
 
-    是否开启了 component2，默认为 `false`，仅 `支付宝小程序` 支持
+    Có mở component thứ 2 hay không，giá trị mặc định `false`. Chỉ có Alipay applet hỗ trợ.
 
-- 该函数必须在所有用到 `store` 的代码之前调用
+- Hàm này phải được gọi trước tất cả các code liên quan đến `store` 
 
-  **最佳实践：**
+  **Best Practices：**
 
-  要保证 `setProvider` 在所有用到 `store` 的代码之前调用，但是代码中各处充斥着对 `store` 的使用，如何保证？
+  Làm cách nào đảm bảo rằng `setProvider` được gọi trước tất cả mã sử dụng `store`？
 
-  可以单独新建一个 js 文件(例如 `setupStore.js`)用来调用 `setProvider`，然后在 `app.js` 文件最顶部引入该文件即可
+  Bạn có thể tạo một tập tin .js riêng biệt (ví dụ `setupStore.js`) để gọi `setProvider`，Import tập tin này ở đầu tập tin `app.js`. 
 
   ```js
   // setupStore.js
   import store from 'your/store/path'
-  // 微信小程序
+  // WeChat Mini Program
   import { setProvider } from 'redux-miniprogram-bindings'
 
   setProvider({ store })
@@ -199,34 +199,34 @@
 
 ### connect：`(config) => (options) => void | options`
 
-连接 store
+Kết nối store
 
-- config 对象的属性：
+- Thuộc tính：
 
   - type：`"page" | "component"`
 
-    所连接实例的类型，默认为 `page`，可选值：`page`、`component`
+    Đối tượng kết nối. Nhận giá trị：`page`、`component`; mặc định là `page`.
 
   - mapState：`(string | ((state: Object) => Object))[]`
 
-    实例依赖的 state，可选
+    State mà instance phụ thuộc vào，tuỳ chọn
 
-    会将依赖的 state 数据注入到 data 中，并在后续状态改变时自动更新。是个数组类型，数组中可以包含字符串、函数
+    Dependent state data sẽ được inject vào dữ liệu của store, và sẽ được tự động cập nhật khi state biến đổi sau đó. Nó có kiểu dữ liệu là mảng; mảng này có thể chứa string hoặc hàm.
 
-    - 数组中的字符串：字符串为依赖的 state 的相应的 key 值，页面(或组件)会在依赖的 state 发生改变时自动更新状态和队列批量触发视图渲染
+    - Mảng string：Các string là các key value tương ứng của dependent state. Page hay component sẽ tự động cập nhật trạng thái và đi vào hàng đợi theo lô chờ kích hoạt kết xuất view khi dependent state thay đổi.
 
       ```js
       {
-        // state1、state2 为 store 的 state 中的 key 值
+        // state1, state2 are the key values ​​in the state of the store
         // store.getState().state1
         // store.getState().state2
         mapState: ['state1', 'state2']
       }
       ```
 
-    - 数组中的函数：函数接收 state 作为参数，可通过 state 获取到最新的状态数据，该函数必须返回一个对象，对象中的每一项可以是任意值，一般是根据 state 组合的数据
+    - Mảng hàm：Hàm nhận state làm tham số. Dữ liệu mới nhất của state có thể truy xuất thông qua đối tượng state. Hàm sẽ trả về một object; mỗi mục trong object đó có thể thuộc bất kỳ kiểu dữ liệu nào, thường dựa trên dữ liệu kết hợp state.
 
-      该方式会在 store 数据发生改变(并非一定是当前实例依赖的状态发生改变)时执行函数，然后对函数返回的结果和现有 data 中的数据进行 diff 比较，确认发生改变后队列批量更新渲染
+      Phương thức này thực thi hàm khi dữ liệu ở store thay đổi (không nhất thiết phải là state mà thực thể hiện tại phụ thuộc vào) và sau đó đối chiếu kết quả trả về của hàm với dữ liệu hiện có, và tiến hành kết xuất các thay đổi.
 
       ```js
       {
@@ -239,7 +239,7 @@
       }
       ```
 
-    - 字符串和函数混合：函数会在每次 store 数据发生改变时调用，请确保函数足够的小和快。出于性能优化，建议多使用字符串形式，减少使用函数形式，必要时将两种形式混合使用
+    - Mảng vừa string vừa hàm: hàm sẽ được gọi mỗi khi dữ liệu trong store thay đổi. Để tối ưu hoá hiệu suất hoạt động, tốt nhất bạn sử dụng càng nhiều string cũng như càng ít hàm càng tốt đối với mảng loại này. Ngoài ra, hàm nên nhỏ gọn và thực thi nhanh chóng. 
 
       ```js
       {
@@ -254,43 +254,43 @@
 
   - mapDispatch：`Object | dispatch => Object`
 
-    注入可执行的 dispatch 处理函数，可选
+    Inject một hàm xử lý dispatch, tuỳ chọn. 
 
-    - 对象形式：`key` 值为自定义函数名，实例内部可以通过该名称访问该方法，`value` 值为 `actionCreator` 函数。会将 actionCreator 函数包装成自动调用 disptach 的函数，并注入到实例方法中
+    - Ở dạng object：`key` là tên của hàm tuỳ biến, nó có thể được truy cập thông qua tên bên trong object, và `value` là giá trị của hàm `actionCreator`. `actionCreator` nằm trong hàm tự động gọi dispatch và được inject vào phương thức thực thể (instance method).
 
       ```js
-      // 配置
+      // Configuration
       mapDispatch: {
         methodsName1: actionCreator1,
         methodsName2: actionCreator2,
       }
 
-      // 调用
+      // Call
       this.methodsName1()
-      // 相当于
+      // equivalent to
       dispatch(actionCreator1())
 
-      // 调用
+      // call
       this.methodsName2(a, b, c)
-      // 相当于
+      // equivalent to
       dispatch(methodsName2(a, b, c))
       ```
 
-    - 函数形式：函数接收 dispatch 作为参数，返回一个对象，包含自定义整理后的处理函数
+    - Ở dạng hàm: hàm này sẽ nhận dispatch làm tham số và trả ra một object, bao gồm hàm xử lý sau khi kết thúc tùy chỉnh.
 
       ```js
-      // 配置
+      // Configuration
       mapDispatch: (dispatch) => ({
         methodsName1: () => dispatch(actionCreator1()),
         methodsName2: (...args) => dispatch(actionCreator2(...args)),
       })
 
-      // 调用
+      // Transfer
       this.methodsName1()
       this.methodsName2(a, b, c)
       ```
 
-    > **注意：** 通过 mapDispatch 注入的函数也可以在 XML 中作为事件处理函数使用。如果函数需要传递参数时请注意，事件处理函数默认会传入 `event` 对象作为函数的第一个参数
+    > **Lưu ý:**  Những hàm bị inject thông qua thông qua `mapDispatch` cũng có thể được sử dụng như các hàm xử lý sự kiện trong XML. Nếu bạn cần truyền các tham số hàm, theo mặc định, phương thức xử lý sự kiện (event handler) sẽ truyền đối tượng sự kiện (event object) dưới dạng tham số đầu tiên của hàm.
 
     ```html
     <view bind:tap="handleAdd">Add</view>
@@ -298,9 +298,9 @@
 
   - manual：`boolean`
 
-    是否需要手动调用 `Page()` 或 `Component()`，默认值为 `false`
+    Cho phép gọi `Page()` hay `Component()`，giá trị mặc định `false`
 
-    当设置为 `true` 时，`connect` 会返回处理好的传入的 options 对象，需要手动调用 `Page()` 或 `Component()` 进行实例注册。这为使用者自定义扩展提供了途径
+    Nếu mang giá trị `true`，`connect` trả về đối tượng tùy chọn đã được xử lý, bạn gọi thủ công Page() hay Component() để khai báo thực thể. Nó hữu ích cho người dùng trong việc tùy biến các mở rộng (extension).
 
     ```js
     const options = connect({
@@ -314,7 +314,7 @@
     Page(options)
     ```
 
-- 扩展封装：可能你不喜欢 `connect` 的传参方式，或者不想使用前还要引用，那么可以自行扩展封装
+- Gói mở rộng：nếu bạn không thích dùng `connect` hay cách truyền tham số của nó, bạn có thể tự tạo ra gói cho riêng mình.
 
   示例扩展 Page：
 
@@ -330,7 +330,7 @@
     const realOptions = connect({
       mapState,
       mapDispatch,
-      // 此处必须设置为手动挂载，因为已经重写了 Page 函数
+      // This must be set to manual, because the Page function has been rewritten.
       manual: true,
     })(restOptions)
 
@@ -340,14 +340,14 @@
 
   ```js
   // app.js
-  // 引入扩展
+  // Introduce extension
   import './bootstrap.js'
 
   App({})
   ```
 
   ```js
-  // 使用
+  // use
   Page({
     mapState: [
       // ...
@@ -360,21 +360,21 @@
 
 ### \$page
 
-connect Page 的别名
+Alias used to connect Page
 
 ```js
 $page()({})
-// 相当于
+// equivalent to
 connect({ type: 'page' })({})
 ```
 
 ### \$component
 
-connect Component 的别名
+Alias used to connect Component
 
 ```js
 $component()({})
-// 相当于
+// equivalent to
 connect({ type: 'component' })({})
 ```
 
@@ -382,56 +382,56 @@ connect({ type: 'component' })({})
 
 #### useStore: `() => Store`
 
-获取 store 实例对象
+Lấy thực thể store
 
 ```js
 import { useStore } from 'redux-miniprogram-bindings'
 const store = useStore()
 
-// 相当于如下方式，但是支付宝小程序分包时不建议使用如下方式，会出现多 store 实例
+// It is equivalent to the following method, but it is not recommended to use the following method when Alipay applet subcontracting, there will be multiple store instances
 import store from 'your/store/path'
 ```
 
 #### useState: `() => Object`
 
-获取当前 state 对象
+Lấy đối tượng state hiện tại.
 
 ```js
 import { useState } from 'redux-miniprogram-bindings'
 const state = useState()
 
-// 相当于如下方式，但是支付宝小程序分包时不建议使用如下方式，会出现多 store 实例
+// It is equivalent to the following method, but it is not recommended to use the following method when Alipay applet subcontracting, there will be multiple store instances
 import store from 'your/store/path'
 const state = store.getState()
 ```
 
 #### useDispatch: `() => Dispatch`
 
-获取 dispatch 函数
+Lấy hàm dispatch
 
 ```js
 import { useDispatch } from 'redux-miniprogram-bindings'
 const dispatch = useDispatch()
 
-// 相当于如下方式，但是支付宝小程序分包时不建议使用如下方式，会出现多 store 实例
+// It is equivalent to the following method, but it is not recommended to use the following method when Alipay applet subcontracting, there will be multiple store instances
 import store from 'your/store/path'
 const dispatch = store.dispatch
 ```
 
 #### useSubscribe
 
-添加 store 订阅
+Đăng ký (subscription) với store.
 
-接收一个回调函数，该函数会在 store 数据发生改变时调用，该函数接收两个参数，分别是当前状态 currState 和之前状态 prevState，通过对比两者数据实现细化监听
+Nhận hàm callback khi dữ liệu trong store thay đổi. Hàm này nhận 2 tham số: `currState` - trạng hiện thời - và `prevState` - trạng thái trước đó. Nó sẽ so sánh 2 trạng thái này.
 
-返回一个函数，调用该函数可以取消订阅
+Trả về một hàm có thể được gọi để huỷ đăng ký.
 
 ```js
 import { useSubscribe } from 'redux-miniprogram-bindings'
 
 $page()({
   onLoad() {
-    // 启用订阅
+    // Enable subscription
     this.unsubscribe = useSubscribe((currState, prevState) => {
       if (currState.userInfo.name !== prevState.userInfo.name) {
         console.log('userName change')
@@ -440,7 +440,7 @@ $page()({
   },
 
   onUnload() {
-    // 解除订阅
+    // Huỷ đăng ký
     this.unsubscribe()
   },
 })
@@ -448,11 +448,11 @@ $page()({
 
 #### useRef
 
-获取 state 对象中数据的引用
+Lấy tham chiếu đến dữ liệu trong đối tượng state.
 
-接收一个 selector 函数，该函数接收 state 作为参数，可以返回任意值(建议返回使用 state 组装的数据)
+Nhận hàm selector. Hàm selector này có tham số là state và có thể trả ra bất kỳ loại giá trị nào (khuyến nghị trả về assembled data sử dụng state).
 
-返回一个 Ref 对象，该对象拥有一个只读的 value 属性，通过该属性可以得到 selector 函数返回的最新值
+Trả về đối tượng tham chiếu, có thuộc tính `value` chỉ đọc, thông qua đó giá trị mới nhất được hàm selector trả ra có thể được truy xuất.
 
 ```js
 import { useRef } from 'redux-miniprogram-bindings'
@@ -460,12 +460,12 @@ const selector = (state) => state.userInfo.name
 const userNameRef = useRef(selector)
 
 setInterval(() => {
-  // 不管 state 数据是否发生改变，得到的永远是 state.userInfo.name 的最新值
+  // Regardless of whether the state data is changed, the latest value of state.userInfo.name is always obtained
   console.log(userNameRef.value)
 }, 1000)
 ```
 
-也可以通过如下方式实现相同功能
+Một hàm khác có chức năng tương tự
 
 ```js
 import { useState } from 'redux-miniprogram-bindings'
@@ -473,27 +473,27 @@ const selector = (state) => state.userInfo.name
 const getUserName = () => selector(useState())
 
 setInterval(() => {
-  // 不管 state 数据是否发生改变，得到的永远是 state.userInfo.name 的最新值
+  // Regardless of whether the state data is changed, the latest value of state.userInfo.name is always obtained
   console.log(getUserName())
 }, 1000)
 ```
 
-具体使用哪种方式完全看个人喜好，这里只是提供了一个工具方法
+Việc sử dụng phương thức nào hoàn toàn phụ thuộc vào sở thích cá nhân.
 
 #### useSelector
 
-对 selector 函数结果进行缓存
+Lưu tạm (cache) kết quả của hàm selector.
 
-接收一个 selector 函数，该函数接收 state 作为参数，可以返回任意值(建议返回使用 state 组装的数据)
+Nhận state làm tham số và có thể trả ra bất cứ loại giá trị nào (khuyến nghị trả về assembled data sử dụng state).
 
-同时接受一个 deps 数组，该数组包含 selector 函数结果变更依赖的 state 的 key 值
+Đồng thời, nó nhận mảng deps chứa key value của state mà sự thay đổi kết quả của hàm selector phụ thuộc vào.
 
-返回一个同 selector 函数签名一致的函数，该函数每次执行时会对依赖项 deps 数组中每一项的值进行浅比较，只有依赖项的值发生改变时才会重新执行函数，降低复杂逻辑函数的执行频率
+Trả về một hàm có cùng signature với hàm selector. Mỗi khi hàm được thực thi, giá trị của mỗi phần trong mảng deps của dependency item sẽ được so sánh (shallow comparison) và hàm sẽ tái thực thi chỉ khi nào giá trị của dependency item thay đổi. Từ đó giảm tần suất thực thi các hàm luận lý phức tạp.
 
 ```js
-// 配合 useRef 使用
+// Use with useRef
 import { useRef, useSelector } from 'redux-miniprogram-bindings'
-// 只在 state.userInfo 发生改变时才会重新执行
+// Only re-execute when state.userInfo changes
 const userNameselector = useSelector((state) => state.userInfo.name, ['userInfo'])
 const userNameRef = useRef(userNameselector)
 
@@ -503,9 +503,9 @@ setInterval(() => {
 ```
 
 ```js
-// 配合 mapState 使用
+// Use with mapState
 import { $page, useSelector } from 'redux-miniprogram-bindings'
-// 只在 state.userInfo 发生改变时才会重新执行
+// Only re-execute when state.userInfo changes
 const userNameSelector = useSelector((state) => ({ userName: state.userInfo.name }), ['userInfo'])
 
 $page({

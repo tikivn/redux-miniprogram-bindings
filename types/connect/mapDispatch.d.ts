@@ -1,2 +1,2 @@
-import { MapDispatch, IAnyObject } from '../types'
-export default function handleMapDispatch(mapDispatch: MapDispatch, target: IAnyObject): void
+import { MapDispatch, IAnyObject } from '../types';
+export default function handleMapDispatch(mapDispatch: MapDispatch, target: IAnyObject): void;
